@@ -52,6 +52,11 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+				ayush: {
+					green: 'hsl(var(--ayush-green))',
+					light: 'hsl(var(--ayush-light))',
+					accent: 'hsl(var(--ayush-accent))'
+				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
