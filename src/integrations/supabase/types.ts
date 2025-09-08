@@ -14,13 +14,196 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      activity_logs: {
+        Row: {
+          application_id: string
+          created_at: string
+          created_by: string | null
+          id: string
+          message: string
+          type: string
+        }
+        Insert: {
+          application_id: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          message: string
+          type: string
+        }
+        Update: {
+          application_id?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          message?: string
+          type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "activity_logs_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "applications"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      applications: {
+        Row: {
+          application_id: string
+          ayush_category: string
+          business_description: string | null
+          business_model: string
+          company_name: string
+          created_at: string
+          current_step: number
+          founded_year: number
+          funding_stage: string | null
+          id: string
+          location: string
+          reviewed_at: string | null
+          status: string
+          submitted_at: string | null
+          target_market: string | null
+          total_steps: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          application_id: string
+          ayush_category: string
+          business_description?: string | null
+          business_model: string
+          company_name: string
+          created_at?: string
+          current_step?: number
+          founded_year: number
+          funding_stage?: string | null
+          id?: string
+          location: string
+          reviewed_at?: string | null
+          status?: string
+          submitted_at?: string | null
+          target_market?: string | null
+          total_steps?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          application_id?: string
+          ayush_category?: string
+          business_description?: string | null
+          business_model?: string
+          company_name?: string
+          created_at?: string
+          current_step?: number
+          founded_year?: number
+          funding_stage?: string | null
+          id?: string
+          location?: string
+          reviewed_at?: string | null
+          status?: string
+          submitted_at?: string | null
+          target_market?: string | null
+          total_steps?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      documents: {
+        Row: {
+          application_id: string
+          created_at: string
+          file_path: string | null
+          file_size: number | null
+          id: string
+          mime_type: string | null
+          name: string
+          status: string
+          updated_at: string
+          uploaded_at: string | null
+          verified_at: string | null
+        }
+        Insert: {
+          application_id: string
+          created_at?: string
+          file_path?: string | null
+          file_size?: number | null
+          id?: string
+          mime_type?: string | null
+          name: string
+          status?: string
+          updated_at?: string
+          uploaded_at?: string | null
+          verified_at?: string | null
+        }
+        Update: {
+          application_id?: string
+          created_at?: string
+          file_path?: string | null
+          file_size?: number | null
+          id?: string
+          mime_type?: string | null
+          name?: string
+          status?: string
+          updated_at?: string
+          uploaded_at?: string | null
+          verified_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "documents_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "applications"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          email: string
+          full_name: string
+          id: string
+          phone: string | null
+          qualification: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          full_name: string
+          id?: string
+          phone?: string | null
+          qualification?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          full_name?: string
+          id?: string
+          phone?: string | null
+          qualification?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      generate_application_id: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
     }
     Enums: {
       [_ in never]: never

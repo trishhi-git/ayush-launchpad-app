@@ -40,9 +40,9 @@ export function Header() {
         </nav>
 
         <div className="flex items-center space-x-4">
-          <Button asChild className="hidden md:inline-flex">
-            <Link to="/login">Login</Link>
-          </Button>
+            <Button asChild className="hidden md:inline-flex">
+              <Link to="/auth">Login</Link>
+            </Button>
           
           {/* Mobile Menu Button */}
           <Button
