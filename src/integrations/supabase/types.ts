@@ -14,6 +14,33 @@ export type Database = {
   }
   public: {
     Tables: {
+      aadhaar_otp_verification: {
+        Row: {
+          aadhaar_number: string
+          created_at: string
+          expires_at: string
+          id: string
+          otp_code: string
+          verified: boolean | null
+        }
+        Insert: {
+          aadhaar_number: string
+          created_at?: string
+          expires_at: string
+          id?: string
+          otp_code: string
+          verified?: boolean | null
+        }
+        Update: {
+          aadhaar_number?: string
+          created_at?: string
+          expires_at?: string
+          id?: string
+          otp_code?: string
+          verified?: boolean | null
+        }
+        Relationships: []
+      }
       activity_logs: {
         Row: {
           application_id: string
@@ -164,6 +191,9 @@ export type Database = {
       }
       profiles: {
         Row: {
+          aadhaar_number: string | null
+          aadhaar_verified: boolean | null
+          aadhaar_verified_at: string | null
           created_at: string
           email: string
           full_name: string
@@ -174,6 +204,9 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          aadhaar_number?: string | null
+          aadhaar_verified?: boolean | null
+          aadhaar_verified_at?: string | null
           created_at?: string
           email: string
           full_name: string
@@ -184,6 +217,9 @@ export type Database = {
           user_id: string
         }
         Update: {
+          aadhaar_number?: string | null
+          aadhaar_verified?: boolean | null
+          aadhaar_verified_at?: string | null
           created_at?: string
           email?: string
           full_name?: string
