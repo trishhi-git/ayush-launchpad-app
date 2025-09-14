@@ -5,12 +5,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { Loader2, ArrowLeft } from "lucide-react";
+import { AadhaarAuth } from "@/components/AadhaarAuth";
+import { Loader2, ArrowLeft, Shield } from "lucide-react";
 
 export default function Auth() {
   const [isLoading, setIsLoading] = useState(false);
+  const [authMode, setAuthMode] = useState<'traditional' | 'aadhaar'>('traditional');
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -128,136 +131,193 @@ export default function Auth() {
           <p className="text-muted-foreground">Register your startup or sign in to continue</p>
         </div>
 
-        <Tabs defaultValue="signin" className="w-full">
+        <Tabs defaultValue="signin" className="w-full" onValueChange={() => setAuthMode('traditional')}>
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="signin">Sign In</TabsTrigger>
             <TabsTrigger value="signup">Sign Up</TabsTrigger>
           </TabsList>
 
           <TabsContent value="signin">
-            <Card>
-              <CardHeader>
-                <CardTitle>Welcome back</CardTitle>
-                <CardDescription>Enter your credentials to access your dashboard</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <form onSubmit={handleSignIn} className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="signin-email">Email</Label>
-                    <Input
-                      id="signin-email"
-                      name="email"
-                      type="email"
-                      placeholder="Enter your email"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      required
-                    />
+            {authMode === 'traditional' ? (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Welcome back</CardTitle>
+                  <CardDescription>Enter your credentials to access your dashboard</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <form onSubmit={handleSignIn} className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="signin-email">Email</Label>
+                      <Input
+                        id="signin-email"
+                        name="email"
+                        type="email"
+                        placeholder="Enter your email"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                        required
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="signin-password">Password</Label>
+                      <Input
+                        id="signin-password"
+                        name="password"
+                        type="password"
+                        placeholder="Enter your password"
+                        value={formData.password}
+                        onChange={handleInputChange}
+                        required
+                      />
+                    </div>
+                    <Button 
+                      type="submit" 
+                      className="w-full bg-ayush-green hover:bg-ayush-green/90"
+                      disabled={isLoading}
+                    >
+                      {isLoading ? (
+                        <>
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          Signing in...
+                        </>
+                      ) : (
+                        'Sign In'
+                      )}
+                    </Button>
+                  </form>
+                  
+                  <div className="mt-4">
+                    <Separator />
+                    <Button 
+                      variant="outline" 
+                      onClick={() => setAuthMode('aadhaar')}
+                      className="w-full mt-4"
+                    >
+                      <Shield className="mr-2 h-4 w-4" />
+                      Sign in with Aadhaar
+                    </Button>
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="signin-password">Password</Label>
-                    <Input
-                      id="signin-password"
-                      name="password"
-                      type="password"
-                      placeholder="Enter your password"
-                      value={formData.password}
-                      onChange={handleInputChange}
-                      required
-                    />
-                  </div>
-                  <Button 
-                    type="submit" 
-                    className="w-full bg-ayush-green hover:bg-ayush-green/90"
-                    disabled={isLoading}
-                  >
-                    {isLoading ? (
-                      <>
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Signing in...
-                      </>
-                    ) : (
-                      'Sign In'
-                    )}
-                  </Button>
-                </form>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            ) : (
+              <div className="space-y-4">
+                <AadhaarAuth 
+                  mode="signin" 
+                  onSuccess={() => navigate("/dashboard")}
+                />
+                <Button 
+                  variant="ghost" 
+                  onClick={() => setAuthMode('traditional')}
+                  className="w-full"
+                >
+                  Back to Email Sign In
+                </Button>
+              </div>
+            )}
           </TabsContent>
 
           <TabsContent value="signup">
-            <Card>
-              <CardHeader>
-                <CardTitle>Create Account</CardTitle>
-                <CardDescription>Register your startup with AYUSH</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <form onSubmit={handleSignUp} className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="signup-name">Full Name</Label>
-                    <Input
-                      id="signup-name"
-                      name="fullName"
-                      type="text"
-                      placeholder="Enter your full name"
-                      value={formData.fullName}
-                      onChange={handleInputChange}
-                      required
-                    />
+            {authMode === 'traditional' ? (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Create Account</CardTitle>
+                  <CardDescription>Register your startup with AYUSH</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <form onSubmit={handleSignUp} className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="signup-name">Full Name</Label>
+                      <Input
+                        id="signup-name"
+                        name="fullName"
+                        type="text"
+                        placeholder="Enter your full name"
+                        value={formData.fullName}
+                        onChange={handleInputChange}
+                        required
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="signup-email">Email</Label>
+                      <Input
+                        id="signup-email"
+                        name="email"
+                        type="email"
+                        placeholder="Enter your email"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                        required
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="signup-password">Password</Label>
+                      <Input
+                        id="signup-password"
+                        name="password"
+                        type="password"
+                        placeholder="Create a password"
+                        value={formData.password}
+                        onChange={handleInputChange}
+                        required
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="confirm-password">Confirm Password</Label>
+                      <Input
+                        id="confirm-password"
+                        name="confirmPassword"
+                        type="password"
+                        placeholder="Confirm your password"
+                        value={formData.confirmPassword}
+                        onChange={handleInputChange}
+                        required
+                      />
+                    </div>
+                    <Button 
+                      type="submit" 
+                      className="w-full bg-ayush-green hover:bg-ayush-green/90"
+                      disabled={isLoading}
+                    >
+                      {isLoading ? (
+                        <>
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          Creating account...
+                        </>
+                      ) : (
+                        'Create Account'
+                      )}
+                    </Button>
+                  </form>
+                  
+                  <div className="mt-4">
+                    <Separator />
+                    <Button 
+                      variant="outline" 
+                      onClick={() => setAuthMode('aadhaar')}
+                      className="w-full mt-4"
+                    >
+                      <Shield className="mr-2 h-4 w-4" />
+                      Register with Aadhaar
+                    </Button>
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="signup-email">Email</Label>
-                    <Input
-                      id="signup-email"
-                      name="email"
-                      type="email"
-                      placeholder="Enter your email"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      required
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="signup-password">Password</Label>
-                    <Input
-                      id="signup-password"
-                      name="password"
-                      type="password"
-                      placeholder="Create a password"
-                      value={formData.password}
-                      onChange={handleInputChange}
-                      required
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="confirm-password">Confirm Password</Label>
-                    <Input
-                      id="confirm-password"
-                      name="confirmPassword"
-                      type="password"
-                      placeholder="Confirm your password"
-                      value={formData.confirmPassword}
-                      onChange={handleInputChange}
-                      required
-                    />
-                  </div>
-                  <Button 
-                    type="submit" 
-                    className="w-full bg-ayush-green hover:bg-ayush-green/90"
-                    disabled={isLoading}
-                  >
-                    {isLoading ? (
-                      <>
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Creating account...
-                      </>
-                    ) : (
-                      'Create Account'
-                    )}
-                  </Button>
-                </form>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            ) : (
+              <div className="space-y-4">
+                <AadhaarAuth 
+                  mode="signup" 
+                  additionalData={formData}
+                  onSuccess={() => navigate("/dashboard")}
+                />
+                <Button 
+                  variant="ghost" 
+                  onClick={() => setAuthMode('traditional')}
+                  className="w-full"
+                >
+                  Back to Email Registration
+                </Button>
+              </div>
+            )}
           </TabsContent>
         </Tabs>
       </div>
