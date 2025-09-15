@@ -1,73 +1,53 @@
-# Welcome to your Lovable project
+# AYUSH Startup Portal
 
-## Project info
+Official startup registration portal for traditional medicine businesses under the Ministry of AYUSH, Government of India.
 
-**URL**: https://lovable.dev/projects/72f37cea-5511-4756-8580-4a12dfad7f25
+## About
 
-## How can I edit this code?
+This portal facilitates the registration and support of startups in the AYUSH (Ayurveda, Yoga & Naturopathy, Unani, Siddha, and Homeopathy) sector. The platform provides comprehensive services for traditional medicine entrepreneurs including fast-track registration, access to government schemes, mentorship programs, and networking opportunities.
 
-There are several ways of editing your application.
+## Features
 
-**Use Lovable**
+- **Fast-Track Registration**: Streamlined startup registration process
+- **Government Schemes Access**: Direct access to funding and support programs
+- **Expert Mentorship**: Guidance from industry experts and successful entrepreneurs
+- **Networking Platform**: Connect with like-minded entrepreneurs and investors
+- **Aadhaar Authentication**: Secure authentication using Aadhaar OTP
+- **Responsive Design**: Optimized for all devices
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/72f37cea-5511-4756-8580-4a12dfad7f25) and start prompting.
+## Technologies Used
 
-Changes made via Lovable will be committed automatically to this repo.
+- **React 18** - Modern UI library
+- **TypeScript** - Type-safe development
+- **Tailwind CSS** - Utility-first CSS framework
+- **Supabase** - Backend-as-a-Service for authentication and database
+- **React Router** - Client-side routing
+- **Vite** - Fast build tool and development server
 
-**Use your preferred IDE**
+## Development
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+To run the project locally:
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+```bash
+# Clone the repository
+git clone [repository-url]
+cd ayush-startup-portal
 
-Follow these steps:
+# Install dependencies
+npm install
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Start development server
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+## Deployment
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+The portal is deployed and accessible through the official government infrastructure with appropriate security measures and compliance standards.
 
-**Use GitHub Codespaces**
+## Support
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+For technical support or inquiries about the AYUSH Startup Portal, please contact the Ministry of AYUSH technical team through official government channels.
 
-## What technologies are used for this project?
+## Security & Compliance
 
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/72f37cea-5511-4756-8580-4a12dfad7f25) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+This portal adheres to government security standards and data protection regulations as mandated by the Government of India for official digital services.
