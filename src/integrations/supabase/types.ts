@@ -139,6 +139,41 @@ export type Database = {
         }
         Relationships: []
       }
+      document_verification_logs: {
+        Row: {
+          created_at: string | null
+          document_id: string
+          id: string
+          notes: string | null
+          status: string
+          verified_by: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          document_id: string
+          id?: string
+          notes?: string | null
+          status: string
+          verified_by?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          document_id?: string
+          id?: string
+          notes?: string | null
+          status?: string
+          verified_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "document_verification_logs_document_id_fkey"
+            columns: ["document_id"]
+            isOneToOne: false
+            referencedRelation: "documents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       documents: {
         Row: {
           application_id: string
@@ -151,7 +186,10 @@ export type Database = {
           status: string
           updated_at: string
           uploaded_at: string | null
+          verification_notes: string | null
+          verification_status: string | null
           verified_at: string | null
+          verified_by: string | null
         }
         Insert: {
           application_id: string
@@ -164,7 +202,10 @@ export type Database = {
           status?: string
           updated_at?: string
           uploaded_at?: string | null
+          verification_notes?: string | null
+          verification_status?: string | null
           verified_at?: string | null
+          verified_by?: string | null
         }
         Update: {
           application_id?: string
@@ -177,7 +218,10 @@ export type Database = {
           status?: string
           updated_at?: string
           uploaded_at?: string | null
+          verification_notes?: string | null
+          verification_status?: string | null
           verified_at?: string | null
+          verified_by?: string | null
         }
         Relationships: [
           {

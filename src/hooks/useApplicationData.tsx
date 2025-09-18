@@ -30,6 +30,11 @@ export interface Document {
   status: string;
   uploaded_at?: string;
   verified_at?: string;
+  verification_status?: string;
+  verification_notes?: string;
+  verified_by?: string;
+  file_size?: number;
+  mime_type?: string;
 }
 
 export interface ActivityLog {
@@ -252,60 +257,111 @@ export function useApplicationData() {
   const uploadDocument = async (file: File, documentId: string) => {
     if (!user || !application) return false;
 
-    const fileExt = file.name.split('.').pop();
-    const fileName = `${user.id}/${documentId}.${fileExt}`;
+    try {
+      // First validate the document
+      const { data: validationResult, error: validationError } = await supabase.functions.invoke('document-processor', {
+        body: {
+          documentId,
+          fileInfo: {
+            name: file.name,
+            type: file.type,
+            size: file.size
+          },
+          action: 'validate'
+        }
+      });
 
-    // Upload file to storage
-    const { error: uploadError } = await supabase.storage
-      .from('documents')
-      .upload(fileName, file);
+      if (validationError) {
+        console.error('Validation error:', validationError);
+        throw new Error('Document validation failed');
+      }
 
-    if (uploadError) {
-      console.error("Error uploading file:", uploadError);
+      if (!validationResult.valid) {
+        throw new Error(validationResult.errors.join(', '));
+      }
+
+      // Upload file to Supabase storage
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${user.id}/${documentId}.${fileExt}`;
+      
+      const { error: uploadError } = await supabase.storage
+        .from('documents')
+        .upload(fileName, file, {
+          cacheControl: '3600',
+          upsert: true
+        });
+
+      if (uploadError) {
+        console.error('Upload error:', uploadError);
+        throw uploadError;
+      }
+
+      // Process the document via edge function
+      const { data: processResult, error: processError } = await supabase.functions.invoke('document-processor', {
+        body: {
+          documentId,
+          fileMetadata: {
+            name: file.name,
+            type: file.type,
+            size: file.size,
+            path: fileName
+          },
+          action: 'process'
+        }
+      });
+
+      if (processError) {
+        console.error('Processing error:', processError);
+        throw new Error('Document processing failed');
+      }
+
+      // Update document record with file path
+      const { error: updateError } = await supabase
+        .from('documents')
+        .update({
+          file_path: fileName,
+          file_size: file.size,
+          mime_type: file.type,
+          status: "uploaded",
+          uploaded_at: new Date().toISOString(),
+          verification_status: 'pending'
+        })
+        .eq('id', documentId);
+
+      if (updateError) {
+        console.error('Update error:', updateError);
+        throw updateError;
+      }
+
+      // Log document upload
+      await supabase
+        .from("activity_logs")
+        .insert({
+          application_id: application.id,
+          type: "document-upload",
+          message: `Document "${file.name}" uploaded successfully and is pending verification`,
+          created_by: user.id,
+        });
+
+      await fetchDocuments(application.id);
+      await fetchActivities(application.id);
+
+      toast({
+        title: "Success",
+        description: "Document uploaded successfully and is pending verification!",
+      });
+
+      return true;
+      
+    } catch (error) {
+      console.error('Error uploading document:', error);
       toast({
         title: "Error",
-        description: "Failed to upload file",
+        description: error instanceof Error ? error.message : "Failed to upload document",
         variant: "destructive",
       });
       return false;
     }
-
-    // Update document record
-    const { error: updateError } = await supabase
-      .from("documents")
-      .update({
-        file_path: fileName,
-        file_size: file.size,
-        mime_type: file.type,
-        status: "uploaded",
-        uploaded_at: new Date().toISOString(),
-      })
-      .eq("id", documentId);
-
-    if (updateError) {
-      console.error("Error updating document:", updateError);
-      return false;
-    }
-
-    // Log document upload
-    await supabase
-      .from("activity_logs")
-      .insert({
-        application_id: application.id,
-        type: "document-upload",
-        message: `Document uploaded successfully`,
-        created_by: user.id,
-      });
-
-    await fetchDocuments(application.id);
-    await fetchActivities(application.id);
-
-    toast({
-      title: "Success",
-      description: "Document uploaded successfully!",
-    });
-
-    return true;
   };
 
   return {
