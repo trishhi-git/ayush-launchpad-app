@@ -85,9 +85,13 @@ export type Database = {
           company_name: string
           created_at: string
           current_step: number
+          equity_offered: number | null
           founded_year: number
+          funding_goal: number | null
+          funding_raised: number | null
           funding_stage: string | null
           id: string
+          is_seeking_funding: boolean | null
           location: string
           reviewed_at: string | null
           status: string
@@ -105,9 +109,13 @@ export type Database = {
           company_name: string
           created_at?: string
           current_step?: number
+          equity_offered?: number | null
           founded_year: number
+          funding_goal?: number | null
+          funding_raised?: number | null
           funding_stage?: string | null
           id?: string
+          is_seeking_funding?: boolean | null
           location: string
           reviewed_at?: string | null
           status?: string
@@ -125,9 +133,13 @@ export type Database = {
           company_name?: string
           created_at?: string
           current_step?: number
+          equity_offered?: number | null
           founded_year?: number
+          funding_goal?: number | null
+          funding_raised?: number | null
           funding_stage?: string | null
           id?: string
+          is_seeking_funding?: boolean | null
           location?: string
           reviewed_at?: string | null
           status?: string
@@ -233,15 +245,66 @@ export type Database = {
           },
         ]
       }
+      funding_requests: {
+        Row: {
+          amount: number
+          application_id: string
+          created_at: string
+          equity_percentage: number | null
+          id: string
+          investor_id: string
+          message: string | null
+          status: string
+          terms: string | null
+          updated_at: string
+        }
+        Insert: {
+          amount: number
+          application_id: string
+          created_at?: string
+          equity_percentage?: number | null
+          id?: string
+          investor_id: string
+          message?: string | null
+          status?: string
+          terms?: string | null
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          application_id?: string
+          created_at?: string
+          equity_percentage?: number | null
+          id?: string
+          investor_id?: string
+          message?: string | null
+          status?: string
+          terms?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "funding_requests_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "applications"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           aadhaar_number: string | null
           aadhaar_verified: boolean | null
           aadhaar_verified_at: string | null
+          admin_level: string | null
+          company_name: string | null
           created_at: string
           email: string
           full_name: string
           id: string
+          investment_capacity: number | null
+          investment_focus: string | null
           phone: string | null
           qualification: string | null
           updated_at: string
@@ -251,10 +314,14 @@ export type Database = {
           aadhaar_number?: string | null
           aadhaar_verified?: boolean | null
           aadhaar_verified_at?: string | null
+          admin_level?: string | null
+          company_name?: string | null
           created_at?: string
           email: string
           full_name: string
           id?: string
+          investment_capacity?: number | null
+          investment_focus?: string | null
           phone?: string | null
           qualification?: string | null
           updated_at?: string
@@ -264,13 +331,38 @@ export type Database = {
           aadhaar_number?: string | null
           aadhaar_verified?: boolean | null
           aadhaar_verified_at?: string | null
+          admin_level?: string | null
+          company_name?: string | null
           created_at?: string
           email?: string
           full_name?: string
           id?: string
+          investment_capacity?: number | null
+          investment_focus?: string | null
           phone?: string | null
           qualification?: string | null
           updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
           user_id?: string
         }
         Relationships: []
@@ -284,9 +376,20 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: string
       }
+      get_user_role: {
+        Args: { _user_id: string }
+        Returns: Database["public"]["Enums"]["app_role"]
+      }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "startup" | "admin" | "investor"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -413,6 +516,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["startup", "admin", "investor"],
+    },
   },
 } as const

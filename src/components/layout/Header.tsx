@@ -1,85 +1,62 @@
 import { Button } from "@/components/ui/button";
-import { Link, useLocation } from "react-router-dom";
-import { Menu, X } from "lucide-react";
-import { useState } from "react";
+import { Link } from "react-router-dom";
+import { Leaf, LogOut } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
 
 export function Header() {
-  const location = useLocation();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { user, userRole, signOut } = useAuth();
 
-  const navItems = [
-    { href: "/", label: "Home" },
-    { href: "/register", label: "Register Startup" },
-    { href: "/dashboard", label: "Dashboard" },
-    { href: "/about", label: "About AYUSH" },
-  ];
+  const handleSignOut = async () => {
+    await signOut();
+  };
+
+  const getDashboardLink = () => {
+    switch (userRole) {
+      case 'admin':
+        return '/admin';
+      case 'investor':
+        return '/investor';
+      case 'startup':
+      default:
+        return '/dashboard';
+    }
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between">
         <Link to="/" className="flex items-center space-x-2">
-          <div className="h-8 w-8 rounded bg-ayush-green"></div>
+          <Leaf className="h-8 w-8 text-ayush-green" />
           <span className="font-bold text-xl">AYUSH Portal</span>
         </Link>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-6">
-          {navItems.map((item) => (
-            <Link
-              key={item.href}
-              to={item.href}
-              className={`text-sm font-medium transition-colors hover:text-primary ${
-                location.pathname === item.href
-                  ? "text-primary"
-                  : "text-muted-foreground"
-              }`}
-            >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
-
-        <div className="flex items-center space-x-4">
-            <Button asChild className="hidden md:inline-flex">
-              <Link to="/auth">Login</Link>
-            </Button>
+        <nav className="flex items-center space-x-6">
+          <Link to="/about" className="text-sm font-medium hover:text-ayush-green transition-colors">
+            About
+          </Link>
           
-          {/* Mobile Menu Button */}
-          <Button
-            variant="ghost"
-            size="icon"
-            className="md:hidden"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            {isMobileMenuOpen ? <X /> : <Menu />}
-          </Button>
-        </div>
+          {user ? (
+            <>
+              <Button asChild variant="outline" size="sm">
+                <Link to={getDashboardLink()}>Dashboard</Link>
+              </Button>
+              <Button onClick={handleSignOut} variant="ghost" size="sm">
+                <LogOut className="h-4 w-4 mr-2" />
+                Sign Out
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button asChild variant="outline" size="sm">
+                <Link to="/auth-selection">Login</Link>
+              </Button>
+              <Button asChild size="sm">
+                <Link to="/auth-selection">Get Started</Link>
+              </Button>
+            </>
+          )}
+        </nav>
       </div>
-
-      {/* Mobile Navigation */}
-      {isMobileMenuOpen && (
-        <div className="md:hidden border-t bg-background">
-          <nav className="container py-4 space-y-3">
-            {navItems.map((item) => (
-              <Link
-                key={item.href}
-                to={item.href}
-                className={`block py-2 text-sm font-medium transition-colors hover:text-primary ${
-                  location.pathname === item.href
-                    ? "text-primary"
-                    : "text-muted-foreground"
-                }`}
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                {item.label}
-              </Link>
-            ))}
-            <Button asChild className="w-full">
-              <Link to="/login">Login</Link>
-            </Button>
-          </nav>
-        </div>
-      )}
     </header>
   );
 }

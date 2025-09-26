@@ -66,8 +66,8 @@ export default function Home() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button asChild size="lg" className="text-lg px-8">
-                <Link to="/auth">
-                  Start Registration <ArrowRight className="ml-2 h-5 w-5" />
+                <Link to="/auth-selection">
+                  Get Started <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
               <Button variant="outline" size="lg" className="text-lg px-8" asChild>
@@ -143,7 +143,7 @@ export default function Home() {
                 ))}
               </div>
               <Button asChild size="lg">
-                <Link to="/register">Get Started Now</Link>
+                <Link to="/auth-selection">Get Started Now</Link>
               </Button>
             </div>
             <div className="relative">
@@ -174,7 +174,7 @@ export default function Home() {
                 registered their traditional medicine startups with us.
               </p>
               <Button size="lg" variant="secondary" asChild className="text-lg px-8">
-                <Link to="/register">
+                <Link to="/auth-selection">
                   Begin Registration Process <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>

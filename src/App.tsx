@@ -14,6 +14,11 @@ import Login from "./pages/Login";
 import Auth from "./pages/Auth";
 import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
+import AuthSelection from "./pages/AuthSelection";
+import StartupAuth from "./pages/auth/StartupAuth";
+import AdminAuth from "./pages/auth/AdminAuth";
+import InvestorAuth from "./pages/auth/InvestorAuth";
+import InvestorDashboard from "./pages/InvestorDashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 const queryClient = new QueryClient();
@@ -41,9 +46,18 @@ const App = () => (
                     <Admin />
                   </ProtectedRoute>
                 } />
+                <Route path="/investor" element={
+                  <ProtectedRoute>
+                    <InvestorDashboard />
+                  </ProtectedRoute>
+                } />
                 <Route path="/about" element={<About />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/auth" element={<Auth />} />
+                <Route path="/auth-selection" element={<AuthSelection />} />
+                <Route path="/auth/startup" element={<StartupAuth />} />
+                <Route path="/auth/admin" element={<AdminAuth />} />
+                <Route path="/auth/investor" element={<InvestorAuth />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
