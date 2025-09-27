@@ -70,7 +70,7 @@ export default function InvestorDashboard() {
         .from('applications')
         .select(`
           *,
-          profiles!inner (
+          profiles!user_id (
             full_name,
             email
           )
