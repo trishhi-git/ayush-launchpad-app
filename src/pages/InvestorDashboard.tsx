@@ -66,20 +66,32 @@ export default function InvestorDashboard() {
 
   const fetchStartups = async () => {
     try {
-      const { data, error } = await supabase
+      // Query applications and profiles separately, then combine
+      const { data: applicationsData, error: applicationsError } = await supabase
         .from('applications')
-        .select(`
-          *,
-          profiles!user_id (
-            full_name,
-            email
-          )
-        `)
+        .select('*')
         .eq('is_seeking_funding', true)
         .eq('status', 'approved');
 
-      if (error) throw error;
-      setStartups(data || []);
+      if (applicationsError) throw applicationsError;
+
+      // Get profile data for each application
+      const startupDataWithProfiles = [];
+      
+      for (const app of applicationsData || []) {
+        const { data: profileData, error: profileError } = await supabase
+          .from('profiles')
+          .select('full_name, email')
+          .eq('user_id', app.user_id)
+          .single();
+
+        startupDataWithProfiles.push({
+          ...app,
+          profiles: profileError ? null : profileData
+        });
+      }
+
+      setStartups(startupDataWithProfiles);
     } catch (error) {
       console.error('Error fetching startups:', error);
       toast({
