@@ -4,9 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import DocumentVerifier from "@/components/admin/DocumentVerifier";
 import { ApplicationManager } from "@/components/admin/ApplicationManager";
-import { DocumentDebug } from "@/components/admin/DocumentDebug";
-import { DatabaseTest } from "@/components/DatabaseTest";
-import { FileCheck, Users, BarChart3, Settings, LogOut } from "lucide-react";
+import { AdminInvestment } from "@/components/admin/AdminInvestment";
+import { FileCheck, LogOut, DollarSign } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 export default function Admin() {
@@ -60,21 +59,14 @@ export default function Admin() {
         </div>
 
         <Tabs defaultValue="documents" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger value="documents" className="flex items-center gap-2">
               <FileCheck className="h-4 w-4" />
               Documents
             </TabsTrigger>
-            <TabsTrigger value="debug" className="flex items-center gap-2">
-              Debug
-            </TabsTrigger>
-            <TabsTrigger value="analytics" className="flex items-center gap-2">
-              <BarChart3 className="h-4 w-4" />
-              Analytics
-            </TabsTrigger>
-            <TabsTrigger value="settings" className="flex items-center gap-2">
-              <Settings className="h-4 w-4" />
-              Settings
+            <TabsTrigger value="investments" className="flex items-center gap-2">
+              <DollarSign className="h-4 w-4" />
+              Investments
             </TabsTrigger>
           </TabsList>
 
@@ -82,41 +74,8 @@ export default function Admin() {
             <DocumentVerifier />
           </TabsContent>
 
-
-
-          <TabsContent value="debug">
-            <div className="space-y-6">
-              <DatabaseTest />
-              <DocumentDebug />
-            </div>
-          </TabsContent>
-
-          <TabsContent value="analytics">
-            <Card>
-              <CardHeader>
-                <CardTitle>Analytics Dashboard</CardTitle>
-                <CardDescription>
-                  View application statistics and trends
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">Analytics dashboard coming soon...</p>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="settings">
-            <Card>
-              <CardHeader>
-                <CardTitle>Admin Settings</CardTitle>
-                <CardDescription>
-                  Configure system settings and preferences
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">Admin settings coming soon...</p>
-              </CardContent>
-            </Card>
+          <TabsContent value="investments">
+            <AdminInvestment />
           </TabsContent>
         </Tabs>
       </div>

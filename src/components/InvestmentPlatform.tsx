@@ -96,8 +96,8 @@ export function InvestmentPlatform() {
   return (
     <div className="space-y-6">
       <div className="text-center">
-        <h2 className="text-3xl font-bold">AYUSH Certified Startups</h2>
-        <p className="text-muted-foreground">Invest in government-approved traditional medicine startups</p>
+        <h2 className="text-3xl font-bold">Government-Approved AYUSH Startups</h2>
+        <p className="text-muted-foreground">Invest in verified healthcare startups certified by the government</p>
       </div>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -107,7 +107,7 @@ export function InvestmentPlatform() {
               <div className="flex justify-between items-start">
                 <CardTitle className="text-lg">{startup.company_name}</CardTitle>
                 <Badge className="bg-green-100 text-green-800">
-                  AYUSH Certified
+                  Government Approved
                 </Badge>
               </div>
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -127,7 +127,7 @@ export function InvestmentPlatform() {
               
               <div className="flex items-center gap-2 text-sm">
                 <Calendar className="h-4 w-4" />
-                Approved: {new Date(startup.approved_at).toLocaleDateString()}
+                Approved: {startup.approved_at ? new Date(startup.approved_at).toLocaleDateString() : 'Recently approved'}
               </div>
 
               <Dialog>

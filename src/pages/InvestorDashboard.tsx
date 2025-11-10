@@ -173,22 +173,17 @@ export default function InvestorDashboard() {
         <div className="mb-8">
           <h1 className="text-4xl font-bold mb-2">Investor Dashboard</h1>
           <p className="text-lg text-muted-foreground">
-            Discover and invest in promising AYUSH startups
+            Invest in government-approved AYUSH healthcare startups
           </p>
         </div>
 
         <Tabs defaultValue="opportunities" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="opportunities">Investment Opportunities</TabsTrigger>
-            <TabsTrigger value="startups">Browse Startups</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="opportunities">Approved Startups</TabsTrigger>
             <TabsTrigger value="investments">My Investments</TabsTrigger>
           </TabsList>
 
           <TabsContent value="opportunities">
-            <InvestmentPlatform />
-          </TabsContent>
-
-          <TabsContent value="startups">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {startups.map((startup) => (
                 <Card key={startup.id} className="hover:shadow-lg transition-shadow">
@@ -201,8 +196,8 @@ export default function InvestorDashboard() {
                           {startup.ayush_category}
                         </CardDescription>
                       </div>
-                      <Badge variant="secondary" className="text-xs">
-                        {startup.status}
+                      <Badge className="bg-green-100 text-green-800 text-xs">
+                        Government Approved
                       </Badge>
                     </div>
                   </CardHeader>
@@ -323,9 +318,9 @@ export default function InvestorDashboard() {
               <Card>
                 <CardContent className="text-center py-12">
                   <TrendingUp className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                  <h3 className="text-lg font-medium mb-2">No startups seeking funding</h3>
+                  <h3 className="text-lg font-medium mb-2">No approved startups available</h3>
                   <p className="text-muted-foreground">
-                    Check back later for new investment opportunities.
+                    Government-approved AYUSH startups will appear here for investment.
                   </p>
                 </CardContent>
               </Card>

@@ -79,6 +79,7 @@ export type Database = {
       applications: {
         Row: {
           application_id: string
+          approved_at: string | null
           ayush_category: string
           business_description: string | null
           business_model: string
@@ -103,6 +104,7 @@ export type Database = {
         }
         Insert: {
           application_id: string
+          approved_at?: string | null
           ayush_category: string
           business_description?: string | null
           business_model: string
@@ -127,6 +129,7 @@ export type Database = {
         }
         Update: {
           application_id?: string
+          approved_at?: string | null
           ayush_category?: string
           business_description?: string | null
           business_model?: string
